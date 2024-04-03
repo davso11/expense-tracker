@@ -9,7 +9,7 @@ export const ExpenseCategoryInput = z.object({
 });
 
 export const ExpenseInput = z.object({
-  amount: z.string().min(1, { message: 'Le montant est requis' }),
+  amount: z.coerce.number().min(1, { message: 'Le montant est requis' }),
   description: z.string().optional(),
   date: z.coerce.date(),
   categoryId: z.string().min(1, { message: 'La catégorie est requise' }),

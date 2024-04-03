@@ -50,7 +50,7 @@ export function NewExpenseForm() {
   const form = useForm<ExpenseInput>({
     resolver: zodResolver(ExpenseInput),
     defaultValues: {
-      amount: '',
+      amount: 0,
       date: new Date(),
       categoryId: '',
       description: '',
@@ -113,6 +113,7 @@ export function NewExpenseForm() {
                 <FormLabel>Montant (FCFA)</FormLabel>
                 <FormControl>
                   <Input
+                    type="number"
                     placeholder="XXXXXXXX"
                     {...field}
                   />
