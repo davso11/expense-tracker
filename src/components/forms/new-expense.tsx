@@ -104,7 +104,7 @@ export function NewExpenseForm() {
         onSubmit={form.handleSubmit(submitHandler)}
         className="space-y-4"
       >
-        <div className="xs:flex-row flex flex-col gap-4">
+        <div className="flex flex-col gap-4 xs:flex-row">
           <FormField
             name="amount"
             control={form.control}
@@ -128,7 +128,7 @@ export function NewExpenseForm() {
             name="categoryId"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Categorie</FormLabel>
+                <FormLabel>Catégorie</FormLabel>
                 <div className="relative">
                   <Select
                     onValueChange={field.onChange}
