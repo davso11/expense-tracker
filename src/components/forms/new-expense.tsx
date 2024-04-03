@@ -58,6 +58,8 @@ export function NewExpenseForm() {
   });
 
   const submitHandler = (values: ExpenseInput) => {
+    setError(undefined);
+
     const data = {
       ...values,
       userId: 'cc4ca204-2179-4fb0-95e2-8b45066bbffb',
