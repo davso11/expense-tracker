@@ -40,7 +40,7 @@ import { dayjs } from '@/lib/dayjs';
 import { cn } from '@/lib/utils';
 
 export function NewExpenseForm() {
-  const { saveMutation } = useExpenses();
+  const { saveMutation } = useExpenses({ enabled: false });
   const { categoriesQuery } = useExpenseCategories();
   const [error, setError] = useState<string>();
   const categories = categoriesQuery.data ?? undefined;

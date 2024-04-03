@@ -14,6 +14,7 @@ export function useExpenseCategories(
     queryKey: ['expense-categories'],
     queryFn: () => actions.fetchMany(options?.queries),
     enabled: options?.enabled ?? true,
+    staleTime: Infinity,
   });
 
   const categoryQuery = useQuery({

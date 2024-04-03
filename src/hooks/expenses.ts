@@ -17,6 +17,7 @@ export function useExpenses(
     queryKey: ['expenses'],
     queryFn: () => actions.fetchMany(options?.queries),
     enabled: options?.enabled ?? true,
+    staleTime: Infinity,
   });
 
   const expenseQuery = useQuery({
@@ -49,6 +50,7 @@ export function useTotalExpenses(
     queryKey: ['expenses', 'total', { type: 'daily' }],
     queryFn: () => actions.getDailyTotal(options?.date),
     enabled: type === 'daily' && (options?.enabled ?? true),
+    staleTime: Infinity,
   });
 
   const monthlyTotalQuery = useQuery({
@@ -56,6 +58,7 @@ export function useTotalExpenses(
     queryFn: () =>
       actions.getMonthlyTotal({ month: options?.month, year: options?.year }),
     enabled: type === 'monthly' && (options?.enabled ?? true),
+    staleTime: Infinity,
   });
 
   return {
