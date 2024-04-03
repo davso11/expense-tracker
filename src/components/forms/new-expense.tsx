@@ -104,7 +104,7 @@ export function NewExpenseForm() {
         onSubmit={form.handleSubmit(submitHandler)}
         className="space-y-4"
       >
-        <div className="flex space-x-4">
+        <div className="xs:flex-row flex flex-col gap-4">
           <FormField
             name="amount"
             control={form.control}

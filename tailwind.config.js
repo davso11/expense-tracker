@@ -68,6 +68,9 @@ module.exports = {
         'accordion-up': 'accordion-up 0.2s ease-out',
         'spin-fast': 'spin 0.65s linear infinite',
       },
+      screens: {
+        xs: '440px',
+      },
     },
   },
   plugins: [require('tailwindcss-animate')],
