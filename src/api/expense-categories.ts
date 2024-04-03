@@ -1,8 +1,21 @@
 import { http } from '@/lib/http';
 import { formatUrlQueries } from '@/lib/utils';
 import { APIResponse, ExpenseCategory } from '@/types';
+import { ExpenseCategoryInput } from '@/schemas/expenses';
 
 const BASE_PATH = 'expense-categories';
+
+export async function post(data: ExpenseCategoryInput) {
+  const res = await http
+    .post(BASE_PATH, { json: data })
+    .json<APIResponse<ExpenseCategory>>();
+
+  if (!res.ok) {
+    throw Error(res.error);
+  }
+
+  return res.data;
+}
 
 export async function fetchMany(
   queries?: Partial<{

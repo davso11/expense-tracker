@@ -1,6 +1,33 @@
+import {
+  MoreVertical,
+  PieChart,
+  Plus,
+  LucideIcon,
+  PackagePlus,
+  TicketPlus,
+} from 'lucide-react';
+import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { MoreVertical, PieChart, Plus, LucideIcon } from 'lucide-react';
+import { useMutationState } from '@tanstack/react-query';
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { Button } from './ui/button';
+import { NewCategorieForm } from './forms/new-category';
 import { cn } from '@/lib/utils';
 
 const NAV_ITEMS: ReadonlyArray<{
@@ -8,11 +35,6 @@ const NAV_ITEMS: ReadonlyArray<{
   tooltip: string;
   href: string;
 }> = [
-  {
-    Icon: Plus,
-    href: '/expenses/new',
-    tooltip: 'Ajouter une dépense',
-  },
   {
     Icon: PieChart,
     href: '/stats',
@@ -24,6 +46,20 @@ export function Header({
   className,
   ...props
 }: React.ComponentProps<'header'>) {
+  const [openCatDialog, setOpenCatDialog] = useState(false);
+
+  const [saveStatus] = useMutationState({
+    filters: {
+      mutationKey: ['save-expense-category'],
+      exact: true,
+    },
+    select: (mutation) => mutation.state.status,
+  });
+
+  const shouldDisable = () => {
+    return saveStatus === 'success';
+  };
+
   return (
     <header
       className={cn('pb-4 pt-4 sm:pt-8', className)}
@@ -37,6 +73,55 @@ export function Header({
 
         {/* NAV LINKS */}
         <div className="ml-auto space-x-2">
+          <Dialog
+            open={openCatDialog}
+            onOpenChange={setOpenCatDialog}
+          >
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  pill
+                  size="icon"
+                  variant="secondary"
+                >
+                  <Plus size={18} />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-32">
+                <DropdownMenuItem asChild>
+                  <Link to="/expenses/new">
+                    <TicketPlus
+                      className="mr-1.5"
+                      size={16}
+                    />
+                    <span>Dépense</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DialogTrigger asChild>
+                  <DropdownMenuItem>
+                    <PackagePlus
+                      className="mr-1.5"
+                      size={16}
+                    />
+                    <span>Catégorie</span>
+                  </DropdownMenuItem>
+                </DialogTrigger>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <DialogContent className="w-[25.25rem]">
+              <DialogHeader>
+                <DialogTitle>Nouvelle catégorie</DialogTitle>
+              </DialogHeader>
+
+              {/* NEW EXPENSE FORM */}
+              <NewCategorieForm
+                id="new-category-form"
+                setOpenCatDialog={setOpenCatDialog}
+              />
+            </DialogContent>
+          </Dialog>
+
           {NAV_ITEMS.map(({ href, Icon, tooltip }, idx) => (
             <Button
               pill
@@ -46,13 +131,7 @@ export function Header({
               tooltip={tooltip}
               asChild
             >
-              <NavLink
-                to={href}
-                className={({ isActive }) => {
-                  if (isActive) return 'bg-slate-300 hover:bg-slate-300';
-                  return '';
-                }}
-              >
+              <NavLink to={href}>
                 <Icon size={18} />
               </NavLink>
             </Button>

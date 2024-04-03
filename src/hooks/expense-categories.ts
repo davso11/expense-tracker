@@ -1,4 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { ExpenseCategoryInput } from '@/schemas/expenses';
 import * as actions from '@/api/expense-categories';
 
 export function useExpenseCategories(
@@ -23,8 +24,14 @@ export function useExpenseCategories(
     enabled: (!!options?.id && (options.enabled ?? true)) ?? false,
   });
 
+  const saveMutation = useMutation({
+    mutationKey: ['save-expense-category'],
+    mutationFn: (data: ExpenseCategoryInput) => actions.post(data),
+  });
+
   return {
     categoriesQuery,
     categoryQuery,
+    saveMutation,
   };
 }
