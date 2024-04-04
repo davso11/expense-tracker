@@ -189,7 +189,7 @@ export function NewExpenseForm() {
                       )}
                     >
                       {field.value ? (
-                        dayjs(field.value).format('LL')
+                        dayjs(field.value).format('LLL')
                       ) : (
                         <span>Choisissez une date</span>
                       )}
