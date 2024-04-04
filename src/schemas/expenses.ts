@@ -1,13 +1,12 @@
 import { z } from 'zod';
+import emojiRegex from 'emoji-regex';
 
 // TODO: regex MM-DD-YYYY ([1-12]-[1-31]-[0-∞])
 // export const Date = z.string().regex();
 
 export const ExpenseCategoryInput = z.object({
   name: z.string().min(1, { message: 'Le nom est requis' }),
-  emoji: z
-    .string()
-    .regex(/^[\p{Emoji}]{1}$/u, { message: "L'emoji est requis" }), // Only one emoji
+  emoji: z.string().regex(emojiRegex(), { message: "L'emoji est requis" }), // Only one emoji
 });
 
 export const ExpenseInput = z.object({
