@@ -50,7 +50,7 @@ export function NewExpenseForm() {
   const form = useForm<ExpenseInput>({
     resolver: zodResolver(ExpenseInput),
     defaultValues: {
-      amount: 0,
+      amount: '0',
       date: new Date(),
       categoryId: '',
       description: '',

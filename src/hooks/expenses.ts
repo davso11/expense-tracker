@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { ExpenseInput, UpdateExpenseInput } from '@/schemas/expenses';
 import * as actions from '@/api/expenses';
-import { ExpenseInput } from '@/schemas/expenses';
 
 export function useExpenses(
   options?: Partial<{
@@ -16,7 +16,7 @@ export function useExpenses(
   const expensesQuery = useQuery({
     queryKey: ['expenses'],
     queryFn: () => actions.fetchMany(options?.queries),
-    enabled: options?.enabled ?? true,
+    enabled: !options?.id && (options?.enabled ?? true),
     staleTime: Infinity,
   });
 
@@ -30,10 +30,22 @@ export function useExpenses(
     mutationFn: (data: ExpenseInput) => actions.post(data),
   });
 
+  const updateMutation = useMutation({
+    mutationFn: (data: UpdateExpenseInput) => {
+      return actions.update(data);
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => actions.remove(id),
+  });
+
   return {
     expensesQuery,
     expenseQuery,
     saveMutation,
+    updateMutation,
+    deleteMutation,
   };
 }
 

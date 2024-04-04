@@ -11,11 +11,21 @@ export const ExpenseCategoryInput = z.object({
 });
 
 export const ExpenseInput = z.object({
-  amount: z.coerce.number().min(1, { message: 'Le montant est requis' }),
+  amount: z.coerce
+    .string()
+    .min(1, { message: 'Le montant est requis' })
+    .regex(/^(?!0+(\.0+)?$)[1-9]\d*(\.\d\d?)?$/, {
+      message: 'Le montant est invalide',
+    }),
   description: z.string().optional(),
   date: z.coerce.date(),
   categoryId: z.string().min(1, { message: 'La catégorie est requise' }),
 });
 
+export const UpdateExpenseInput = ExpenseInput.omit({ date: true }).merge(
+  z.object({ id: z.string().optional() }),
+);
+
 export type ExpenseCategoryInput = z.infer<typeof ExpenseCategoryInput>;
 export type ExpenseInput = z.infer<typeof ExpenseInput>;
+export type UpdateExpenseInput = z.infer<typeof UpdateExpenseInput>;

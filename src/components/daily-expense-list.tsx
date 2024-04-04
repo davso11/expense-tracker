@@ -1,7 +1,11 @@
-import { Expense } from '@/types';
+import { Link } from 'react-router-dom';
 import { useExpenses } from '@/hooks/expenses';
 import { DailyExpenseCard } from './daily-expense-card';
 import { DailyExpenseCardLoader } from './loaders/daily-expense-card-loader';
+import { Separator } from './ui/separator';
+import { Button } from './ui/button';
+import { Expense } from '@/types';
+import { cn } from '@/lib/utils';
 
 export function DailyExpenseList() {
   const { expensesQuery } = useExpenses({
@@ -32,6 +36,7 @@ export function DailyExpenseList() {
         )}
 
         {/* PENDING */}
+        {/* TODO: Update the loader */}
         {expensesQuery.status === 'pending' && (
           <div className="flex flex-col divide-y divide-gray-100">
             {[1, 2, 3].map((key) => (
@@ -43,12 +48,26 @@ export function DailyExpenseList() {
         {/* SUCCESS */}
         {expensesQuery.status === 'success' &&
           (expenses!.length > 0 ? (
-            <div className="flex flex-col divide-y divide-gray-100">
-              {expenses!.map((expense) => (
-                <DailyExpenseCard
-                  key={expense.id}
-                  expense={expense}
-                />
+            <div className="flex flex-col">
+              {expenses!.map((expense, idx) => (
+                <div key={expense.id}>
+                  <Button
+                    variant="ghost"
+                    className="flex h-auto rounded-xl py-3 pl-1.5 pr-2.5 hover:bg-slate-50"
+                    asChild
+                  >
+                    <Link to={`expenses/${expense.id}`}>
+                      <DailyExpenseCard expense={expense} />
+                    </Link>
+                  </Button>
+
+                  <Separator
+                    className={cn(
+                      'my-1 bg-slate-100',
+                      idx === expenses!.length - 1 && 'hidden',
+                    )}
+                  />
+                </div>
               ))}
             </div>
           ) : (

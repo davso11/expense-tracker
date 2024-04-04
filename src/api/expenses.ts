@@ -1,6 +1,6 @@
 import { http } from '@/lib/http';
 import { formatUrlQueries } from '@/lib/utils';
-import { ExpenseInput } from '@/schemas/expenses';
+import { ExpenseInput, UpdateExpenseInput } from '@/schemas/expenses';
 import { APIResponse, Expense } from '@/types';
 
 const BASE_PATH = 'expenses';
@@ -88,6 +88,30 @@ export async function fetchOne(id: string, queries?: Partial<{ q: string }>) {
   }
 
   const res = await http.get(URL).json<APIResponse<Expense>>();
+
+  if (!res.ok) {
+    throw Error(res.error);
+  }
+
+  return res.data;
+}
+
+export async function update(data: UpdateExpenseInput) {
+  const res = await http
+    .put(`${BASE_PATH}/${data.id}`, { json: data })
+    .json<APIResponse<Expense>>();
+
+  if (!res.ok) {
+    throw Error(res.error);
+  }
+
+  return res.data;
+}
+
+export async function remove(id: string) {
+  const res = await http
+    .delete(`${BASE_PATH}/${id}`)
+    .json<APIResponse<'done'>>();
 
   if (!res.ok) {
     throw Error(res.error);

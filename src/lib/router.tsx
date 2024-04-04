@@ -7,8 +7,9 @@ import { HomeLayout } from '@/layouts/home';
 import { HomePage } from '@/pages/home';
 import { LoginPage } from '@/pages/login';
 import { RegistrationPage } from '@/pages/register';
-import { NotFound } from '@/pages/not-found';
 import { NewExpensePage } from '@/pages/expenses/new';
+import { ExpensePage } from '@/pages/expenses/expense';
+import { NotFound } from '@/pages/not-found';
 
 export const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
           {
             path: 'new',
             element: <NewExpensePage />,
+          },
+          {
+            path: ':id',
+            element: <ExpensePage />,
           },
         ],
       },
