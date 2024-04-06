@@ -68,8 +68,6 @@ export function NewExpenseForm() {
       userId: 'cc4ca204-2179-4fb0-95e2-8b45066bbffb',
     };
 
-    console.log(data);
-
     saveMutation.mutate(data, {
       onError(error) {
         if (error instanceof HTTPError) {
@@ -238,11 +236,12 @@ export function NewExpenseForm() {
                     name={field.name}
                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm transition-none focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
                     placeholder="Choisissez une heure"
-                    value={field.value ? dayjs(field.value) : null}
-                    onChange={field.onChange}
+                    defaultValue={field.value ? dayjs(field.value) : null}
+                    onChange={(time) => field.onChange(time.toDate())}
                     disabled={field.disabled}
                     onBlur={field.onBlur}
                     suffixIcon={<Clock size={18} />}
+                    onOk={(time) => field.onChange(time.toDate())}
                     allowClear={{
                       clearIcon: (
                         <CircleX
