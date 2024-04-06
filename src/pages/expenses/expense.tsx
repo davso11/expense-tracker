@@ -142,6 +142,7 @@ export function ExpensePage() {
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
+
         <Dialog
           open={openDelDialog}
           onOpenChange={setOpenDelDialog}
@@ -215,17 +216,31 @@ export function ExpensePage() {
             </div>
 
             {/* DATE */}
-            <FormItem>
-              <FormLabel htmlFor="date">Date</FormLabel>
-              <FormControl>
-                <Input
-                  id="date"
-                  readOnly
-                  value={dayjs(expenseQuery.data.date).format('LLL')}
-                  disabled
-                />
-              </FormControl>
-            </FormItem>
+            <div className="flex flex-col gap-4 xs:flex-row">
+              <FormItem className="w-full">
+                <FormLabel htmlFor="date">Date</FormLabel>
+                <FormControl>
+                  <Input
+                    id="date"
+                    readOnly
+                    value={dayjs(expenseQuery.data.date).format('LL')}
+                    disabled
+                  />
+                </FormControl>
+              </FormItem>
+
+              <FormItem className="w-full">
+                <FormLabel htmlFor="time">Heure</FormLabel>
+                <FormControl>
+                  <Input
+                    id="time"
+                    readOnly
+                    value={dayjs(expenseQuery.data.time).format('HH:mm:ss')}
+                    disabled
+                  />
+                </FormControl>
+              </FormItem>
+            </div>
 
             {/* DESCRIPTION */}
             <FormField

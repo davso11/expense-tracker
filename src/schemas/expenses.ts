@@ -18,12 +18,14 @@ export const ExpenseInput = z.object({
     }),
   description: z.string().optional(),
   date: z.coerce.date(),
+  time: z.coerce.date(),
   categoryId: z.string().min(1, { message: 'La catégorie est requise' }),
 });
 
-export const UpdateExpenseInput = ExpenseInput.omit({ date: true }).merge(
-  z.object({ id: z.string().optional() }),
-);
+export const UpdateExpenseInput = ExpenseInput.omit({
+  date: true,
+  time: true,
+}).merge(z.object({ id: z.string().optional() }));
 
 export type ExpenseCategoryInput = z.infer<typeof ExpenseCategoryInput>;
 export type ExpenseInput = z.infer<typeof ExpenseInput>;

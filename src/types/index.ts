@@ -26,6 +26,7 @@ export type Expense = {
   id: string;
   amount: string;
   date: string;
+  time: string;
   description: string | null;
   updatedAt?: string;
   categoryId?: string;

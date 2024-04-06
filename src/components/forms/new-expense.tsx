@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import locale from 'antd/es/date-picker/locale/fr_FR';
 import { useQueryClient } from '@tanstack/react-query';
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon, CircleX, Clock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
+import { TimePicker } from 'antd';
 import { HTTPError } from 'ky';
 
 import {
@@ -52,6 +54,7 @@ export function NewExpenseForm() {
     defaultValues: {
       amount: '0',
       date: new Date(),
+      time: new Date(),
       categoryId: '',
       description: '',
     },
@@ -64,6 +67,8 @@ export function NewExpenseForm() {
       ...values,
       userId: 'cc4ca204-2179-4fb0-95e2-8b45066bbffb',
     };
+
+    console.log(data);
 
     saveMutation.mutate(data, {
       onError(error) {
@@ -164,7 +169,9 @@ export function NewExpenseForm() {
                     </SelectContent>
                   </Select>
 
-                  {categoriesQuery.isPending && <InputLoader />}
+                  {categoriesQuery.isPending && (
+                    <InputLoader className="absolute top-0" />
+                  )}
                 </div>
                 <FormMessage />
               </FormItem>
@@ -172,50 +179,85 @@ export function NewExpenseForm() {
           />
         </div>
 
-        <FormField
-          control={form.control}
-          name="date"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel>Date</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        'pl-3 text-left font-normal',
-                        !field.value && 'text-muted-foreground',
-                      )}
-                    >
-                      {field.value ? (
-                        dayjs(field.value).format('LLL')
-                      ) : (
-                        <span>Choisissez une date</span>
-                      )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent
-                  className="w-auto p-0"
-                  align="start"
-                >
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) =>
-                      date > new Date() || date < new Date('1900-01-01')
-                    }
-                    initialFocus
+        <div className="flex flex-col gap-4 xs:flex-row">
+          <FormField
+            control={form.control}
+            name="date"
+            render={({ field }) => (
+              <FormItem className="flex w-full flex-col">
+                <FormLabel>Date</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          'pl-3 text-left font-normal',
+                          !field.value && 'text-muted-foreground',
+                        )}
+                      >
+                        {field.value ? (
+                          dayjs(field.value).format('LL')
+                        ) : (
+                          <span>Choisissez une date</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent
+                    className="w-auto p-0"
+                    align="start"
+                  >
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      disabled={(date) =>
+                        date > new Date() || date < new Date('1900-01-01')
+                      }
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            name="time"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem className="flex w-full flex-col">
+                <FormLabel>Heure</FormLabel>
+                <FormControl>
+                  <TimePicker
+                    ref={field.ref}
+                    locale={locale}
+                    name={field.name}
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm transition-none focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
+                    placeholder="Choisissez une heure"
+                    value={field.value ? dayjs(field.value) : null}
+                    onChange={field.onChange}
+                    disabled={field.disabled}
+                    onBlur={field.onBlur}
+                    suffixIcon={<Clock size={18} />}
+                    allowClear={{
+                      clearIcon: (
+                        <CircleX
+                          size={18}
+                          className="fill-muted"
+                        />
+                      ),
+                    }}
                   />
-                </PopoverContent>
-              </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <FormField
           control={form.control}

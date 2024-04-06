@@ -8,7 +8,10 @@ type Props = React.ComponentProps<'div'> & {
 export function InputLoader({ className, loader, ...props }: Props) {
   return (
     <div
-      className={cn('center-flex h-10 w-full rounded-md border bg-white')}
+      className={cn(
+        'center-flex h-10 w-full rounded-md border bg-white',
+        className,
+      )}
       {...props}
     >
       <Loader2
