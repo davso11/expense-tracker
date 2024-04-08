@@ -18,8 +18,6 @@ export function DailyExpenseList() {
 
   const expenses = expensesQuery.data as Expense[] | undefined;
 
-  // console.log(expenses);
-
   return (
     <section className="container">
       <h2 className="subtitle mb-4">
@@ -35,12 +33,16 @@ export function DailyExpenseList() {
           </div>
         )}
 
-        {/* PENDING */}
-        {/* TODO: Update the loader */}
+        {/* LOADING */}
         {expensesQuery.status === 'pending' && (
-          <div className="flex flex-col divide-y divide-gray-100">
-            {[1, 2, 3].map((key) => (
-              <DailyExpenseCardLoader key={key} />
+          <div className="flex flex-col">
+            {[1, 2, 3].map((key, idx) => (
+              <div key={key}>
+                <DailyExpenseCardLoader />
+                <Separator
+                  className={cn('my-1 bg-slate-100', idx === 2 && 'hidden')}
+                />
+              </div>
             ))}
           </div>
         )}
