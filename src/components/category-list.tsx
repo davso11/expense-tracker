@@ -32,29 +32,43 @@ export function CategoryList() {
         )}
 
         {/* SUCCESS */}
-        {categoriesQuery.status === 'success' && (
-          <div className="flex flex-wrap gap-x-8 gap-y-2 pt-3">
-            {/* NEW CATEGORY BUTTON */}
-            <div className="p-1">
-              <Button
-                pill
-                variant="ghost"
-                className="mt-1 size-16 border-2 border-dashed"
-                onClick={() => setOpen(true)}
-              >
-                <Plus className="text-gray-400" />
-              </Button>
-            </div>
+        {categoriesQuery.status === 'success' &&
+          (categoriesQuery.data!.length > 0 ? (
+            <div className="flex flex-wrap gap-x-8 gap-y-2 pt-3">
+              {/* NEW CATEGORY BUTTON */}
+              <div className="p-1">
+                <Button
+                  pill
+                  variant="ghost"
+                  className="mt-1 size-16 border-2 border-dashed"
+                  onClick={() => setOpen(true)}
+                >
+                  <Plus className="text-gray-400" />
+                </Button>
+              </div>
 
-            {/*  CATEGORIES */}
-            {categoriesQuery.data!.map((category) => (
-              <CategoryCard
-                key={category.id}
-                category={category}
-              />
-            ))}
-          </div>
-        )}
+              {/*  CATEGORIES */}
+              {categoriesQuery.data!.map((category) => (
+                <CategoryCard
+                  key={category.id}
+                  category={category}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="pt-3">
+              <p>
+                Aucune catégorie de trouvée. Vous pouvez en créer en cliquant{' '}
+                <span
+                  className="cursor-pointer font-semibold underline underline-offset-2"
+                  onClick={() => setOpen(true)}
+                >
+                  ici
+                </span>
+                .
+              </p>
+            </div>
+          ))}
       </div>
     </section>
   );
