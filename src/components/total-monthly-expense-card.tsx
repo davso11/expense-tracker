@@ -1,9 +1,13 @@
-import { AlertTriangle, Loader2 } from 'lucide-react';
-import { formatCurrency } from '@/lib/utils';
+import { AlertTriangle, Loader2, Plus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+
+import { Button } from './ui/button';
 import { useTotalExpenses } from '@/hooks/expenses';
+import { formatCurrency } from '@/lib/utils';
 
 export function TotalMonthlyExpenseCard() {
   const { monthlyTotalQuery } = useTotalExpenses('monthly');
+  const navigate = useNavigate();
 
   return (
     <section className="container">
@@ -38,6 +42,16 @@ export function TotalMonthlyExpenseCard() {
         <span className="absolute right-0 top-0 rounded-es-xl bg-emerald-200/75 px-4 py-1.5 font-semibold text-emerald-700">
           FCFA
         </span>
+
+        <Button
+          pill
+          size="icon"
+          className="absolute bottom-4 right-4"
+          onClick={() => navigate('/expenses/new')}
+          tooltip="Nouvelle dépense"
+        >
+          <Plus size={18} />
+        </Button>
       </div>
     </section>
   );
