@@ -44,6 +44,7 @@ import { cn } from '@/lib/utils';
 export function NewExpenseForm() {
   const { saveMutation } = useExpenses({ enabled: false });
   const { categoriesQuery } = useExpenseCategories();
+  const [showDatePop, setShowDatePop] = useState(false);
   const [error, setError] = useState<string>();
   const categories = categoriesQuery.data ?? undefined;
   const navigate = useNavigate();
@@ -137,10 +138,14 @@ export function NewExpenseForm() {
                 <div className="relative">
                   <Select
                     onValueChange={field.onChange}
-                    disabled={!categories}
+                    disabled={!categories || field.disabled}
+                    name={field.name}
                   >
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger
+                        onBlur={field.onBlur}
+                        ref={field.ref}
+                      >
                         <SelectValue
                           placeholder={
                             categories
@@ -184,10 +189,17 @@ export function NewExpenseForm() {
             render={({ field }) => (
               <FormItem className="flex w-full flex-col">
                 <FormLabel>Date</FormLabel>
-                <Popover>
+                <Popover
+                  open={showDatePop}
+                  onOpenChange={setShowDatePop}
+                >
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
+                        ref={field.ref}
+                        name={field.name}
+                        disabled={field.disabled}
+                        onBlur={field.onBlur}
                         variant="outline"
                         className={cn(
                           'pl-3 text-left font-normal',
@@ -199,7 +211,7 @@ export function NewExpenseForm() {
                         ) : (
                           <span>Choisissez une date</span>
                         )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        <CalendarIcon className="ml-auto h-4 w-4 text-zinc-500 opacity-50" />
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
@@ -210,7 +222,10 @@ export function NewExpenseForm() {
                     <Calendar
                       mode="single"
                       selected={field.value}
-                      onSelect={field.onChange}
+                      onSelect={(e) => {
+                        field.onChange(e);
+                        setShowDatePop(false);
+                      }}
                       disabled={(date) =>
                         date > new Date() || date < new Date('1900-01-01')
                       }

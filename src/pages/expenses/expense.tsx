@@ -180,10 +180,15 @@ export function ExpensePage() {
                     <FormLabel>Catégorie</FormLabel>
                     <Select
                       defaultValue={expenseQuery.data.categoryId}
+                      disabled={!categoriesQuery.data || field.disabled}
                       onValueChange={field.onChange}
+                      name={field.name}
                     >
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger
+                          onBlur={field.onBlur}
+                          ref={field.ref}
+                        >
                           <SelectValue
                             placeholder={
                               categoriesQuery.data
