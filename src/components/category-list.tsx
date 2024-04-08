@@ -24,7 +24,7 @@ export function CategoryList() {
 
         {/* LOADING */}
         {categoriesQuery.status === 'pending' && (
-          <div className="flex flex-wrap gap-8 pt-3">
+          <div className="flex flex-wrap gap-x-8 gap-y-2 pt-3">
             {Array.from({ length: 6 }).map((_, idx) => (
               <CategoryCardLoader key={idx} />
             ))}
@@ -33,16 +33,18 @@ export function CategoryList() {
 
         {/* SUCCESS */}
         {categoriesQuery.status === 'success' && (
-          <div className="flex flex-wrap gap-8 pt-3">
+          <div className="flex flex-wrap gap-x-8 gap-y-2 pt-3">
             {/* NEW CATEGORY BUTTON */}
-            <Button
-              pill
-              variant="ghost"
-              className="mt-1 size-16 border-2 border-dashed"
-              onClick={() => setOpen(true)}
-            >
-              <Plus className="text-gray-400" />
-            </Button>
+            <div className="p-1">
+              <Button
+                pill
+                variant="ghost"
+                className="mt-1 size-16 border-2 border-dashed"
+                onClick={() => setOpen(true)}
+              >
+                <Plus className="text-gray-400" />
+              </Button>
+            </div>
 
             {/*  CATEGORIES */}
             {categoriesQuery.data!.map((category) => (
