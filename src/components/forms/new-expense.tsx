@@ -222,9 +222,14 @@ export function NewExpenseForm() {
                     <Calendar
                       mode="single"
                       selected={field.value}
-                      onSelect={(e) => {
-                        field.onChange(e);
-                        setShowDatePop(false);
+                      onSelect={(date) => {
+                        if (date) {
+                          field.onChange(date);
+                          setShowDatePop(false);
+                          return;
+                        }
+
+                        field.onChange(new Date());
                       }}
                       disabled={(date) =>
                         date > new Date() || date < new Date('1900-01-01')
