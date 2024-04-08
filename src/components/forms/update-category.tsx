@@ -4,8 +4,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
-import { Smile } from 'lucide-react';
-import { useState } from 'react';
+import { AlertTriangle, Smile, Trash2 } from 'lucide-react';
+import { useRef, useState } from 'react';
 import { HTTPError } from 'ky';
 
 import {
@@ -24,60 +24,83 @@ import {
 } from '@/components/ui/popover';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { ExpenseCategoryInput } from '@/schemas/expenses';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { UpdateExpenseCategoryInput } from '@/schemas/expenses';
 import { useExpenseCategories } from '@/hooks/expense-categories';
-import { Alert, AlertDescription } from '../ui/alert';
+import { ExpenseCategory } from '@/types';
 import { cn } from '@/lib/utils';
 
-type Props = React.ComponentProps<'form'> & {
-  setOpenCatDialog?: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-export function NewCategorieForm({
-  className,
-  setOpenCatDialog,
+export function UpdateCategoryForm({
+  category,
+  setOpenDialog,
   ...props
-}: Props) {
-  const qc = useQueryClient();
+}: React.ComponentProps<'form'> & {
+  category: ExpenseCategory;
+  setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   const [error, setError] = useState<string>();
+  const [delReady, setDelReady] = useState(false);
   const [openEmojis, setOpenEmojis] = useState(false);
-  const { saveMutation } = useExpenseCategories({ enabled: false });
+  const delConfirmCount = useRef(0);
+  const qc = useQueryClient();
 
-  const form = useForm<ExpenseCategoryInput>({
-    resolver: zodResolver(ExpenseCategoryInput),
+  const { deleteMutation, updateMutation } = useExpenseCategories({
+    enabled: false,
+  });
+
+  const form = useForm<UpdateExpenseCategoryInput>({
+    resolver: zodResolver(UpdateExpenseCategoryInput),
     defaultValues: {
-      name: '',
-      emoji: '',
+      name: category.name,
+      emoji: category.emoji || '',
     },
   });
 
-  const submitHandler = (values: ExpenseCategoryInput) => {
+  const submitHandler = (values: UpdateExpenseCategoryInput) => {
     setError(undefined);
 
-    saveMutation.mutate(values, {
-      onError(error) {
-        if (error instanceof HTTPError) {
-          console.log('HTTPError');
-          setError('Erreur inattendue. Veuillez réessayer plus tard.');
+    updateMutation.mutate(
+      {
+        ...values,
+        id: category.id,
+      },
+      {
+        onError(e) {
+          // FIXME: Handle error
+          if (e instanceof HTTPError) {
+            setError(e.message);
+            return;
+          }
+
+          setError("Une erreur s'est produite. Veuillez réessayer.");
+        },
+        onSuccess() {
+          toast.success('Catégorie mise à jour.');
+          qc.invalidateQueries({ queryKey: ['expenses'] });
+          qc.invalidateQueries({ queryKey: ['expense-categories'] });
+          setOpenDialog(false);
+        },
+      },
+    );
+  };
+
+  const deleteHandler = () => {
+    setError(undefined);
+    deleteMutation.mutate(category.id, {
+      onError(e) {
+        // FIXME: Handle error
+        if (e instanceof HTTPError) {
+          setError(e.message);
           return;
         }
 
-        if (error instanceof TypeError) {
-          console.log('TypeError');
-          setError('Erreur inattendue. Veuillez réessayer plus tard.');
-          return;
-        }
-
-        setError(error.message);
+        setError("Une erreur s'est produite. Veuillez réessayer.");
       },
       onSuccess() {
-        form.reset();
-        toast.success('Catégorie enregistrée.');
-        qc.invalidateQueries({
-          queryKey: ['expense-categories'],
-          exact: true,
-        });
-        setOpenCatDialog?.(false);
+        toast.success('Catégorie supprimée.');
+        qc.invalidateQueries({ queryKey: ['expenses'] });
+        qc.invalidateQueries({ queryKey: ['expense-categories'] });
+        setOpenDialog(false);
       },
     });
   };
@@ -85,11 +108,11 @@ export function NewCategorieForm({
   return (
     <Form {...form}>
       <form
-        className={cn(className)}
         onSubmit={form.handleSubmit(submitHandler)}
         {...props}
       >
         <div className="space-y-4">
+          {/* ALERT */}
           {error && (
             <Alert variant="destructive">
               <AlertDescription>{error}</AlertDescription>
@@ -145,6 +168,10 @@ export function NewCategorieForm({
                     >
                       <FormControl>
                         <Button
+                          ref={field.ref}
+                          name={field.name}
+                          disabled={field.disabled}
+                          onBlur={field.onBlur}
                           variant="outline"
                           className={cn(
                             'pl-3 text-left font-normal',
@@ -186,14 +213,53 @@ export function NewCategorieForm({
           />
         </div>
 
-        <Button
-          type="submit"
-          className="mt-6 w-full"
-          disabled={saveMutation.isPending || !form.formState.isValid}
-          pending={saveMutation.isPending}
-        >
-          Enregister
-        </Button>
+        {/* BUTTONS GROUPS */}
+        <div className="mt-6 flex gap-2">
+          <Button
+            type="submit"
+            className="w-full"
+            pending={updateMutation.isPending}
+            disabled={
+              updateMutation.isPending ||
+              deleteMutation.isPending ||
+              !form.formState.isValid ||
+              !form.formState.isDirty
+            }
+          >
+            Mettre à jour
+          </Button>
+          <Button
+            type="button"
+            variant={delReady ? 'destructive' : 'outline'}
+            className="w-full"
+            pending={deleteMutation.isPending}
+            disabled={deleteMutation.isPending || updateMutation.isPending}
+            onClick={() => {
+              if (delReady) {
+                deleteHandler();
+                return;
+              }
+
+              if (delConfirmCount.current === 0) {
+                delConfirmCount.current += 1;
+                setDelReady(true);
+              }
+            }}
+          >
+            {delReady ? (
+              <AlertTriangle
+                className="mr-2"
+                size={16}
+              />
+            ) : (
+              <Trash2
+                className="mr-2"
+                size={16}
+              />
+            )}
+            <span>{delReady ? 'Confirmer' : 'Supprimer'}</span>
+          </Button>
+        </div>
       </form>
     </Form>
   );

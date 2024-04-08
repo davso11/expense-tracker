@@ -89,9 +89,9 @@ export function ExpensePage() {
       onError(error) {
         setError(error.message);
       },
-      async onSuccess() {
+      onSuccess() {
         toast.success('Dépense créée avec succès');
-        await qc.invalidateQueries({ queryKey: ['expenses'] });
+        qc.invalidateQueries({ queryKey: ['expenses'] });
         navigate('/');
       },
     });
@@ -104,10 +104,10 @@ export function ExpensePage() {
       onError(error) {
         setError(error.message);
       },
-      async onSuccess() {
+      onSuccess() {
         toast.success('Dépense supprimée avec succès');
+        qc.invalidateQueries({ queryKey: ['expenses'] });
         setOpenDelDialog(false);
-        await qc.invalidateQueries({ queryKey: ['expenses'] });
         navigate('/');
       },
     });

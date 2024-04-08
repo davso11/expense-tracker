@@ -9,6 +9,10 @@ export const ExpenseCategoryInput = z.object({
   emoji: z.string().regex(emojiRegex(), { message: "L'emoji est requis" }), // Only one emoji
 });
 
+export const UpdateExpenseCategoryInput = ExpenseCategoryInput.merge(
+  z.object({ id: z.string().optional() }),
+);
+
 export const ExpenseInput = z.object({
   amount: z.coerce
     .string()
@@ -30,3 +34,6 @@ export const UpdateExpenseInput = ExpenseInput.omit({
 export type ExpenseCategoryInput = z.infer<typeof ExpenseCategoryInput>;
 export type ExpenseInput = z.infer<typeof ExpenseInput>;
 export type UpdateExpenseInput = z.infer<typeof UpdateExpenseInput>;
+export type UpdateExpenseCategoryInput = z.infer<
+  typeof UpdateExpenseCategoryInput
+>;

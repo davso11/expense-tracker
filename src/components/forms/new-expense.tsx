@@ -85,9 +85,9 @@ export function NewExpenseForm() {
 
         setError(error.message);
       },
-      async onSuccess() {
+      onSuccess() {
         toast.success('Dépense créée avec succès');
-        await qc.invalidateQueries({
+        qc.invalidateQueries({
           queryKey: ['expenses'],
         });
         navigate('/');

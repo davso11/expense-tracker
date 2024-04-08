@@ -1,5 +1,5 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { ExpenseCategoryInput } from '@/schemas/expenses';
+import * as schemas from '@/schemas/expenses';
 import * as actions from '@/api/expense-categories';
 
 export function useExpenseCategories(
@@ -26,12 +26,25 @@ export function useExpenseCategories(
 
   const saveMutation = useMutation({
     mutationKey: ['save-expense-category'],
-    mutationFn: (data: ExpenseCategoryInput) => actions.post(data),
+    mutationFn: (data: schemas.ExpenseCategoryInput) => actions.post(data),
+  });
+
+  const updateMutation = useMutation({
+    mutationKey: ['update-expense-category'],
+    mutationFn: (data: schemas.UpdateExpenseCategoryInput) =>
+      actions.update(data),
+  });
+
+  const deleteMutation = useMutation({
+    mutationKey: ['delete-expense-category'],
+    mutationFn: (id: string) => actions.remove(id),
   });
 
   return {
     categoriesQuery,
     categoryQuery,
     saveMutation,
+    updateMutation,
+    deleteMutation,
   };
 }
