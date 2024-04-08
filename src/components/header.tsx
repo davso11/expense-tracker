@@ -6,9 +6,7 @@ import {
   PackagePlus,
   TicketPlus,
 } from 'lucide-react';
-import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { useMutationState } from '@tanstack/react-query';
 
 import {
   DropdownMenu,
@@ -19,15 +17,14 @@ import {
 } from '@/components/ui/dropdown-menu';
 import {
   Dialog,
-  DialogClose,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Button } from './ui/button';
 import { NewCategorieForm } from './forms/new-category';
+import { useNewCategoryDialog } from '@/contexts/category-dialog';
 import { cn } from '@/lib/utils';
 
 const NAV_ITEMS: ReadonlyArray<{
@@ -46,19 +43,7 @@ export function Header({
   className,
   ...props
 }: React.ComponentProps<'header'>) {
-  const [openCatDialog, setOpenCatDialog] = useState(false);
-
-  const [saveStatus] = useMutationState({
-    filters: {
-      mutationKey: ['save-expense-category'],
-      exact: true,
-    },
-    select: (mutation) => mutation.state.status,
-  });
-
-  const shouldDisable = () => {
-    return saveStatus === 'success';
-  };
+  const { open, setOpen } = useNewCategoryDialog();
 
   return (
     <header
@@ -74,8 +59,8 @@ export function Header({
         {/* NAV LINKS */}
         <div className="ml-auto space-x-2">
           <Dialog
-            open={openCatDialog}
-            onOpenChange={setOpenCatDialog}
+            open={open}
+            onOpenChange={setOpen}
           >
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -117,7 +102,7 @@ export function Header({
               {/* NEW EXPENSE FORM */}
               <NewCategorieForm
                 id="new-category-form"
-                setOpenCatDialog={setOpenCatDialog}
+                setOpenCatDialog={setOpen}
               />
             </DialogContent>
           </Dialog>

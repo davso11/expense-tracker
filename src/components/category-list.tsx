@@ -1,9 +1,14 @@
-import { useExpenseCategories } from '@/hooks/expense-categories';
+import { Plus } from 'lucide-react';
+
+import { Button } from './ui/button';
 import { CategoryCard } from './category-card';
 import { CategoryCardLoader } from './loaders/category-card-loader';
+import { useExpenseCategories } from '@/hooks/expense-categories';
+import { useNewCategoryDialog } from '@/contexts/category-dialog';
 
 export function CategoryList() {
   const { categoriesQuery } = useExpenseCategories();
+  const { setOpen } = useNewCategoryDialog();
 
   return (
     <section className="container">
@@ -29,6 +34,17 @@ export function CategoryList() {
         {/* SUCCESS */}
         {categoriesQuery.status === 'success' && (
           <div className="flex flex-wrap gap-8 pt-3">
+            {/* NEW CATEGORY BUTTON */}
+            <Button
+              pill
+              variant="ghost"
+              className="mt-1 size-16 border-2 border-dashed"
+              onClick={() => setOpen(true)}
+            >
+              <Plus className="text-gray-400" />
+            </Button>
+
+            {/*  CATEGORIES */}
             {categoriesQuery.data!.map((category) => (
               <CategoryCard
                 key={category.id}
