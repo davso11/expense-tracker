@@ -237,7 +237,9 @@ export function NewExpenseForm() {
                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm transition-none focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
                     placeholder="Choisissez une heure"
                     defaultValue={field.value ? dayjs(field.value) : null}
-                    onChange={(time) => field.onChange(time.toDate())}
+                    onChange={(time) =>
+                      field.onChange(time?.toDate() ?? undefined)
+                    }
                     disabled={field.disabled}
                     onBlur={field.onBlur}
                     suffixIcon={<Clock size={18} />}
