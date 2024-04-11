@@ -73,7 +73,7 @@ export function DailyExpenseList() {
               ))}
             </div>
           ) : (
-            <span>Rien à signaler</span>
+            <p className="pt-3">Rien à signaler.</p>
           ))}
       </div>
     </section>

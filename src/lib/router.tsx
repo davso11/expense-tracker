@@ -2,45 +2,64 @@ import { createBrowserRouter } from 'react-router-dom';
 
 // Layouts
 import { HomeLayout } from '@/layouts/home';
+import { RequireAuth } from '@/layouts/require-auth';
+import { PersistAuth } from '@/layouts/persist-auth';
+import { AuthLayout } from '@/layouts/auth';
 
 // Pages
 import { HomePage } from '@/pages/home';
-import { LoginPage } from '@/pages/login';
-import { RegistrationPage } from '@/pages/register';
+import { LoginPage } from '@/pages/auth/login';
+import { RegistrationPage } from '@/pages/auth/register';
 import { NewExpensePage } from '@/pages/expenses/new';
 import { ExpensePage } from '@/pages/expenses/expense';
 import { NotFound } from '@/pages/not-found';
 
 export const router = createBrowserRouter([
   {
-    path: 'login',
-    element: <LoginPage />,
-  },
-  {
-    path: 'register',
-    element: <RegistrationPage />,
-  },
-  {
-    element: <HomeLayout />,
+    path: '/',
+    element: <PersistAuth />,
     children: [
       {
-        index: true,
-        element: <HomePage />,
-      },
-      {
-        path: 'expenses',
+        element: <AuthLayout />,
         children: [
           {
-            index: true,
-            element: <section className="container">🤷🏾‍♂️</section>,
+            path: 'login',
+            element: <LoginPage />,
           },
           {
-            path: 'new',
-            element: <NewExpensePage />,
+            path: 'register',
+            element: <RegistrationPage />,
           },
+        ],
+      },
+      {
+        element: <RequireAuth />,
+        children: [
           {
-            path: ':id',
-            element: <ExpensePage />,
+            element: <HomeLayout />,
+            children: [
+              {
+                index: true,
+                element: <HomePage />,
+              },
+              {
+                path: 'expenses',
+                children: [
+                  {
+                    index: true,
+                    element: <section className="container">🤷🏾‍♂️</section>,
+                  },
+                  {
+                    path: 'new',
+                    element: <NewExpensePage />,
+                  },
+                  {
+                    path: ':id',
+                    element: <ExpensePage />,
+                  },
+                ],
+              },
+            ],
           },
         ],
       },

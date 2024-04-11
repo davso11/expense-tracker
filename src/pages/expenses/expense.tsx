@@ -78,13 +78,7 @@ export function ExpensePage() {
     }
   }, [expenseQuery.data]);
 
-  const submitHandler = (values: UpdateExpenseInput) => {
-    const data = {
-      ...values,
-      userId: 'cc4ca204-2179-4fb0-95e2-8b45066bbffb',
-      id,
-    };
-
+  const submitHandler = (data: UpdateExpenseInput) => {
     updateMutation.mutate(data, {
       onError(error) {
         setError(error.message);

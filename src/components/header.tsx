@@ -1,17 +1,18 @@
 import {
   MoreVertical,
-  PieChart,
   Plus,
   LucideIcon,
   PackagePlus,
   TicketPlus,
 } from 'lucide-react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
@@ -25,25 +26,38 @@ import {
 import { Button } from './ui/button';
 import { NewCategorieForm } from './forms/new-category';
 import { useNewCategoryDialog } from '@/contexts/category-dialog';
+import { useAuthActions } from '@/hooks/auth';
+import { setAccessToken } from '@/lib/auth';
+import { useAuth } from '@/contexts/auth';
 import { cn } from '@/lib/utils';
 
 const NAV_ITEMS: ReadonlyArray<{
   Icon: LucideIcon;
   tooltip: string;
   href: string;
-}> = [
-  {
-    Icon: PieChart,
-    href: '/stats',
-    tooltip: 'Voir les statistiques',
-  },
-] as const;
+}> = [] as const;
 
 export function Header({
   className,
   ...props
 }: React.ComponentProps<'header'>) {
   const { open, setOpen } = useNewCategoryDialog();
+  const { signOutMutation } = useAuthActions();
+  const { setUser } = useAuth();
+  const navigate = useNavigate();
+
+  const logout = async () => {
+    try {
+      await signOutMutation.mutateAsync();
+      setUser(null);
+      setAccessToken(null);
+      toast.success('Vous êtes déconnecté(e).');
+      navigate('/login', { replace: true });
+    } catch (e) {
+      console.error(e);
+      toast.error('Erreur survenue.');
+    }
+  };
 
   return (
     <header
@@ -82,7 +96,6 @@ export function Header({
                     <span>Dépense</span>
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
                 <DialogTrigger asChild>
                   <DropdownMenuItem>
                     <PackagePlus
@@ -122,15 +135,23 @@ export function Header({
             </Button>
           ))}
 
-          <Button
-            pill
-            size="icon"
-            variant="secondary"
-            tooltip="Plus"
-            disabled
-          >
-            <MoreVertical size={18} />
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                pill
+                size="icon"
+                variant="secondary"
+              >
+                <MoreVertical size={18} />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>Mon compte</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem disabled>Profile</DropdownMenuItem>
+              <DropdownMenuItem onClick={logout}>Déconnexion</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </header>

@@ -37,11 +37,11 @@ export function formatCurrency(
     symbol: boolean;
   }>,
 ): string {
-  const decimals = options?.decimals ?? 0;
+  const decimals = options?.decimals ?? 2;
   const symbol = options?.symbol ?? false;
 
   const parts = parseFloat(amount).toFixed(decimals).split('.');
-  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.'); // Add comma for thousands
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' '); // Add comma for thousands
 
   return `${parts.join(',')}${symbol ? ' FCFA' : ''}`;
 }
