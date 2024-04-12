@@ -12,7 +12,7 @@ export function DailyExpenseList() {
     queries: {
       date: 'today',
       q: 'category',
-      limit: '20',
+      limit: '10',
     },
   });
 

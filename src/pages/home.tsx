@@ -6,8 +6,8 @@ export function HomePage() {
   return (
     <>
       <TotalMonthlyExpenseCard />
-      <DailyExpenseList />
       <CategoryList />
+      <DailyExpenseList />
     </>
   );
 }

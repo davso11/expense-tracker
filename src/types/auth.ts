@@ -1,6 +1,6 @@
 import { User } from '.';
 
-export type AuthedUser = Pick<User, 'id' | 'email' | 'firstName' | 'lastName'>;
+export type AuthedUser = Omit<User, 'password' | 'expenses'>;
 
 export type NewUser = Pick<User, 'id' | 'email'> & {
   createdAt: string;

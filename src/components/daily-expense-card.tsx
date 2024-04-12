@@ -22,7 +22,7 @@ export function DailyExpenseCard({ expense, className, ...props }: Props) {
             {!!expense.description && (
               <span className="hidden text-muted-foreground xs:inline">
                 {' '}
-                - {expense.description}
+                • {expense.description}
               </span>
             )}
           </span>

@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import { Outlet } from 'react-router-dom';
-import { useRefreshToken } from '@/hooks/auth';
+import { useRefreshToken, useUserInfo } from '@/hooks/auth';
 import { setAccessToken } from '@/lib/auth';
 import { useAuth } from '@/contexts/auth';
 
 export function PersistAuth() {
   const { data, status } = useRefreshToken();
+  const { refetch: getUser } = useUserInfo({ enabled: false });
   const [done, setDone] = useState(false);
   const { setUser } = useAuth();
 
@@ -17,9 +18,12 @@ export function PersistAuth() {
       setDone(true);
     } else if (status === 'success') {
       setAccessToken(data.accessToken);
-      setDone(true);
+      getUser().then(({ data, status }) => {
+        if (status === 'success') setUser(data);
+        setDone(true);
+      });
     }
-  }, [data, status]);
+  }, [status, data, setUser]);
 
   if (status === 'pending' || !done) {
     return (

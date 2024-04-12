@@ -12,6 +12,7 @@ import { LoginPage } from '@/pages/auth/login';
 import { RegistrationPage } from '@/pages/auth/register';
 import { NewExpensePage } from '@/pages/expenses/new';
 import { ExpensePage } from '@/pages/expenses/expense';
+import { SettingsPage } from '@/pages/account/settings';
 import { NotFound } from '@/pages/not-found';
 
 export const router = createBrowserRouter([
@@ -56,6 +57,15 @@ export const router = createBrowserRouter([
                   {
                     path: ':id',
                     element: <ExpensePage />,
+                  },
+                ],
+              },
+              {
+                path: 'account',
+                children: [
+                  {
+                    path: 'settings',
+                    element: <SettingsPage />,
                   },
                 ],
               },

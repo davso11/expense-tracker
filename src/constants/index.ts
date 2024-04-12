@@ -1,1 +1,1 @@
-export const APP_NAME = 'Xtrac.';
+export const APP_NAME = 'Xtrac';

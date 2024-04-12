@@ -29,6 +29,7 @@ import { useNewCategoryDialog } from '@/contexts/category-dialog';
 import { useAuthActions } from '@/hooks/auth';
 import { setAccessToken } from '@/lib/auth';
 import { useAuth } from '@/contexts/auth';
+import { APP_NAME } from '@/constants';
 import { cn } from '@/lib/utils';
 
 const NAV_ITEMS: ReadonlyArray<{
@@ -67,7 +68,7 @@ export function Header({
       <div className="container flex items-center">
         {/* TITLE */}
         <Link to="/">
-          <h1 className="title">Xtrac.</h1>
+          <h1 className="title">{APP_NAME}</h1>
         </Link>
 
         {/* NAV LINKS */}
@@ -148,7 +149,9 @@ export function Header({
             <DropdownMenuContent>
               <DropdownMenuLabel>Mon compte</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem disabled>Profile</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/account/settings')}>
+                Réglages
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={logout}>Déconnexion</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

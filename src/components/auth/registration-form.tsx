@@ -16,6 +16,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { PasswordInput } from './password-input';
 import { RegisterInput } from '@/schemas/auth';
 import { useAuthActions } from '@/hooks/auth';
 import { cn } from '@/lib/utils';
@@ -99,8 +100,7 @@ export function RegistrationForm({
             <FormItem className="mt-6">
               <FormLabel>Mot de passe</FormLabel>
               <FormControl>
-                <Input
-                  type="password"
+                <PasswordInput
                   placeholder="Votre mot de passe"
                   {...field}
                 />

@@ -1,11 +1,11 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import { getAccessToken } from '@/lib/auth';
+import { useAuth } from '@/contexts/auth';
 
 export function RequireAuth() {
-  const token = getAccessToken();
+  const { user } = useAuth();
   const location = useLocation();
 
-  if (!token) {
+  if (!user) {
     return (
       <Navigate
         replace
