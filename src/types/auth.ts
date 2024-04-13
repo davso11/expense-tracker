@@ -2,7 +2,7 @@ import { User } from '.';
 
 export type AuthedUser = Omit<User, 'password' | 'expenses'>;
 
-export type NewUser = Pick<User, 'id' | 'email'> & {
+export type NewUser = Pick<User, 'id' | 'email' | 'emailVerified'> & {
   createdAt: string;
 };
 

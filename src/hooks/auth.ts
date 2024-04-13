@@ -15,10 +15,15 @@ export function useAuthActions() {
     mutationFn: () => actions.signOut(),
   });
 
+  const confirmEmailMutation = useMutation({
+    mutationFn: (token: string) => actions.confirmEmail(token),
+  });
+
   return {
     signUpMutation,
     signInMutation,
     signOutMutation,
+    confirmEmailMutation,
   };
 }
 

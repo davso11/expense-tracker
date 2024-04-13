@@ -62,13 +62,19 @@ export function LoginForm({
         setError('Une erreur est survenue. Veuillez réessayer plus tard.');
       },
       onSuccess: async (res) => {
-        setUser(res.user);
-        setAccessToken(res.accessToken);
-        setSuccess('Vous êtes connecté. Vous allez être redirigé...');
-        await qc.invalidateQueries();
-        setTimeout(() => {
-          navigate(from, { replace: true });
-        }, 2000);
+        if (res !== 'done') {
+          setUser(res.user);
+          setAccessToken(res.accessToken);
+          setSuccess('Vous êtes connecté. Vous allez être redirigé...');
+          await qc.invalidateQueries();
+          setTimeout(() => {
+            navigate(from, { replace: true });
+          }, 2000);
+        } else {
+          setSuccess(
+            "Vous devez vérifier votre email avant d'avoir accès à votre espace. Un lien de confirmation vient d'être envoyé à votre boîte de réception.",
+          );
+        }
       },
     });
   };

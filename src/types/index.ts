@@ -8,6 +8,7 @@ export type User = {
   password: string;
   firstName: string | null;
   lastName: string | null;
+  emailVerified?: boolean;
   createdAt?: string;
   updatedAt?: string;
   expenses?: Array<Expense>;

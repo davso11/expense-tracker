@@ -13,6 +13,7 @@ import { RegistrationPage } from '@/pages/auth/register';
 import { NewExpensePage } from '@/pages/expenses/new';
 import { ExpensePage } from '@/pages/expenses/expense';
 import { SettingsPage } from '@/pages/account/settings';
+import { ConfirmEmailPage } from '@/pages/auth/confirm-email';
 import { NotFound } from '@/pages/not-found';
 
 export const router = createBrowserRouter([
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
           {
             path: 'register',
             element: <RegistrationPage />,
+          },
+          {
+            path: 'confirm-email',
+            element: <ConfirmEmailPage />,
           },
         ],
       },

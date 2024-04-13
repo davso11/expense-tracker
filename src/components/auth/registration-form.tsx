@@ -28,7 +28,6 @@ export function RegistrationForm({
   const { signUpMutation } = useAuthActions();
   const [error, setError] = useState<string>();
   const [success, setSuccess] = useState<string>();
-  const navigate = useNavigate();
 
   const form = useForm<RegisterInput>({
     resolver: zodResolver(RegisterInput),
@@ -55,11 +54,8 @@ export function RegistrationForm({
       },
       onSuccess: () => {
         setSuccess(
-          'Inscription effectuée avec succès. Vous allez être redirigé vers la page de connexion...',
+          'Un email de confirmation vous a été envoyé! Veuillez consulter votre boîte de réception.',
         );
-        setTimeout(() => {
-          navigate('/login');
-        }, 2000);
       },
     });
   };
