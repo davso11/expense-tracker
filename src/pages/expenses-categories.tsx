@@ -1,36 +1,28 @@
 import { Plus } from 'lucide-react';
-
-import { Button } from './ui/button';
-import { CategoryCard } from './category-card';
-import { CategoryCardLoader } from './loaders/category-card-loader';
-import { useExpenseCategories } from '@/hooks/expense-categories';
+import { Button } from '@/components/ui/button';
+import { CategoryCard } from '@/components/category-card';
+import { CategoryCardLoader } from '@/components/loaders/category-card-loader';
 import { useNewCategoryDialog } from '@/contexts/category-dialog';
-import { SeeAll } from './see-all';
+import { useExpenseCategories } from '@/hooks/expense-categories';
 
-export function CategoryList() {
+export function ExpenseCategoriesPage() {
+  const { categoriesQuery } = useExpenseCategories();
   const { setOpen } = useNewCategoryDialog();
-  const { categoriesQuery } = useExpenseCategories({
-    queries: {
-      limit: '6',
-    },
-  });
+
+  const categories = categoriesQuery.data ?? undefined;
 
   return (
     <section className="container">
-      <div className="mb-4 flex items-center">
-        <h2 className="subtitle">Quelques catégories</h2>
-
-        <SeeAll
-          to="/expense-categories"
-          className="ml-auto"
-        />
-      </div>
+      <h2 className="subtitle mb-8">
+        Catégories de dépenses
+        {categories && categories.length > 0 ? ` (${categories.length})` : ''}
+      </h2>
 
       <div>
         {/* ERROR */}
         {categoriesQuery.status === 'error' && (
           <div className="pt-3 text-red-500">
-            <span>Erreur survenue</span>
+            <span>Erreur survenue.</span>
           </div>
         )}
 
@@ -45,7 +37,7 @@ export function CategoryList() {
 
         {/* SUCCESS */}
         {categoriesQuery.status === 'success' &&
-          (categoriesQuery.data!.length > 0 ? (
+          (categories && categories.length > 0 ? (
             <div className="flex flex-wrap gap-x-8 gap-y-2 pt-3">
               {/* NEW CATEGORY BUTTON */}
               <div className="p-1">
@@ -59,8 +51,8 @@ export function CategoryList() {
                 </Button>
               </div>
 
-              {/*  CATEGORIES */}
-              {categoriesQuery.data!.map((category) => (
+              {/* CATEGORIES */}
+              {categories.map((category) => (
                 <CategoryCard
                   key={category.id}
                   category={category}

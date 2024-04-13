@@ -14,6 +14,9 @@ import { NewExpensePage } from '@/pages/expenses/new';
 import { ExpensePage } from '@/pages/expenses/expense';
 import { SettingsPage } from '@/pages/account/settings';
 import { ConfirmEmailPage } from '@/pages/auth/confirm-email';
+import { DailyExpensesPage } from '@/pages/daily-expenses';
+import { MonthlyExpensesPage } from '@/pages/monthly-expenses';
+import { ExpenseCategoriesPage } from '@/pages/expenses-categories';
 import { NotFound } from '@/pages/not-found';
 
 export const router = createBrowserRouter([
@@ -52,10 +55,6 @@ export const router = createBrowserRouter([
                 path: 'expenses',
                 children: [
                   {
-                    index: true,
-                    element: <section className="container">🤷🏾‍♂️</section>,
-                  },
-                  {
                     path: 'new',
                     element: <NewExpensePage />,
                   },
@@ -73,6 +72,18 @@ export const router = createBrowserRouter([
                     element: <SettingsPage />,
                   },
                 ],
+              },
+              {
+                path: 'daily-expenses',
+                element: <DailyExpensesPage />,
+              },
+              {
+                path: 'monthly-expenses',
+                element: <MonthlyExpensesPage />,
+              },
+              {
+                path: 'expense-categories',
+                element: <ExpenseCategoriesPage />,
               },
             ],
           },

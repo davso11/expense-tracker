@@ -1,9 +1,9 @@
 import {
   MoreVertical,
   Plus,
-  LucideIcon,
   PackagePlus,
   TicketPlus,
+  Home,
 } from 'lucide-react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
@@ -31,12 +31,6 @@ import { setAccessToken } from '@/lib/auth';
 import { useAuth } from '@/contexts/auth';
 import { APP_NAME } from '@/constants';
 import { cn } from '@/lib/utils';
-
-const NAV_ITEMS: ReadonlyArray<{
-  Icon: LucideIcon;
-  tooltip: string;
-  href: string;
-}> = [] as const;
 
 export function Header({
   className,
@@ -73,6 +67,18 @@ export function Header({
 
         {/* NAV LINKS */}
         <div className="ml-auto space-x-2">
+          <Button
+            pill
+            size="icon"
+            variant="secondary"
+            tooltip="Accueil"
+            asChild
+          >
+            <NavLink to="/">
+              <Home size={18} />
+            </NavLink>
+          </Button>
+
           <Dialog
             open={open}
             onOpenChange={setOpen}
@@ -120,21 +126,6 @@ export function Header({
               />
             </DialogContent>
           </Dialog>
-
-          {NAV_ITEMS.map(({ href, Icon, tooltip }, idx) => (
-            <Button
-              pill
-              key={idx}
-              size="icon"
-              variant="secondary"
-              tooltip={tooltip}
-              asChild
-            >
-              <NavLink to={href}>
-                <Icon size={18} />
-              </NavLink>
-            </Button>
-          ))}
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

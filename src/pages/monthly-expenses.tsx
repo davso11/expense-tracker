@@ -1,50 +1,38 @@
 import { Link } from 'react-router-dom';
-import { useExpenses } from '@/hooks/expenses';
+import { Button } from '@/components/ui/button';
 import { DailyExpenseCard } from '@/components/daily-expense-card';
 import { DailyExpenseCardLoader } from '@/components/loaders/daily-expense-card-loader';
 import { Separator } from '@/components/ui/separator';
-import { Button } from '@/components/ui/button';
-import { SeeAll } from '@/components/see-all';
-import { Expense } from '@/types';
+import { useMonthlyExpenses } from '@/hooks/expenses';
 import { cn } from '@/lib/utils';
 
-const EXPENSE_COUNT = 10;
-
-export function DailyExpenseList() {
-  const { expensesQuery } = useExpenses({
+export function MonthlyExpensesPage() {
+  const { data: expenses, status } = useMonthlyExpenses({
     queries: {
-      date: 'today',
       q: 'category',
-      limit: EXPENSE_COUNT.toString(),
     },
   });
 
-  const expenses = expensesQuery.data as Expense[] | undefined;
-
   return (
     <section className="container">
-      <div className="mb-4 flex items-center">
-        <h2 className="subtitle">Dépenses récentes</h2>
-
-        <SeeAll
-          to="/daily-expenses"
-          className="ml-auto"
-        />
-      </div>
+      <h2 className="subtitle mb-8">
+        Vos dépenses de ce mois
+        {expenses && expenses.length > 0 ? ` (${expenses.length})` : ''}
+      </h2>
 
       <div>
         {/* ERROR */}
-        {expensesQuery.status === 'error' && (
+        {status === 'error' && (
           <div className="pt-3 text-red-500">
-            <span>Erreur survenue</span>
+            <span>Erreur survenue.</span>
           </div>
         )}
 
         {/* LOADING */}
-        {expensesQuery.status === 'pending' && (
+        {status === 'pending' && (
           <div className="flex flex-col">
-            {[1, 2, 3].map((key, idx) => (
-              <div key={key}>
+            {Array.from({ length: 4 }).map((_, idx) => (
+              <div key={idx}>
                 <DailyExpenseCardLoader />
                 <Separator
                   className={cn('my-1 bg-slate-100', idx === 2 && 'hidden')}
@@ -55,7 +43,7 @@ export function DailyExpenseList() {
         )}
 
         {/* SUCCESS */}
-        {expensesQuery.status === 'success' &&
+        {status === 'success' &&
           (expenses!.length > 0 ? (
             <div className="flex flex-col">
               {expenses!.map((expense, idx) => (
@@ -80,7 +68,7 @@ export function DailyExpenseList() {
               ))}
             </div>
           ) : (
-            <p className="pt-3">Aucune dépense enregistrée aujourd'hui.</p>
+            <p className="pt-3">Aucune dépense enregistrée ce mois.</p>
           ))}
       </div>
     </section>

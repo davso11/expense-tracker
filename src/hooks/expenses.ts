@@ -78,3 +78,14 @@ export function useTotalExpenses(
     monthlyTotalQuery,
   };
 }
+
+export function useMonthlyExpenses(
+  options?: Partial<{ enabled: boolean; queries?: Partial<{ q: string }> }>,
+) {
+  return useQuery({
+    queryKey: ['expenses', 'monthly'],
+    queryFn: () => actions.getMonthlyExpenses(options?.queries),
+    enabled: options?.enabled ?? true,
+    staleTime: Infinity,
+  });
+}

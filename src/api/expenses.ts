@@ -119,3 +119,19 @@ export async function remove(id: string) {
 
   return res.data;
 }
+
+export async function getMonthlyExpenses(queries?: Partial<{ q: string }>) {
+  let URL = `${BASE_PATH}/monthly-expenses`;
+
+  if (queries) {
+    URL = await formatUrlQueries(URL, queries);
+  }
+
+  const res = await http.get(URL).json<APIResponse<Expense[]>>();
+
+  if (!res.ok) {
+    throw Error(res.error);
+  }
+
+  return res.data;
+}

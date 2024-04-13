@@ -8,6 +8,7 @@ export function useExpenseCategories(
     enabled: boolean;
     queries: Partial<{
       q: string;
+      limit: string;
     }>;
   }>,
 ) {

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
 import { useTotalExpenses } from '@/hooks/expenses';
 import { formatCurrency } from '@/lib/utils';
+import { SeeAll } from './see-all';
 
 export function TotalMonthlyExpenseCard() {
   const { monthlyTotalQuery } = useTotalExpenses('monthly');
@@ -22,6 +23,13 @@ export function TotalMonthlyExpenseCard() {
                 ? 'Dépensés ce mois'
                 : 'Aucune dépense ce mois'}
             </span>
+            <SeeAll
+              to="/monthly-expenses"
+              className="mt-1"
+              button={{
+                variant: 'outline',
+              }}
+            />
           </div>
         )}
 

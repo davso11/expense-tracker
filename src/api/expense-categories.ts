@@ -20,6 +20,7 @@ export async function post(data: schemas.ExpenseCategoryInput) {
 export async function fetchMany(
   queries?: Partial<{
     q: string;
+    limit: string;
   }>,
 ) {
   let URL = BASE_PATH;
