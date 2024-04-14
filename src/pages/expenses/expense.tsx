@@ -72,16 +72,22 @@ export function ExpensePage() {
   }, [expenseQuery.data]);
 
   const submitHandler = (data: UpdateExpenseInput) => {
-    updateMutation.mutate(data, {
-      onError(error) {
-        setError(error.message);
+    updateMutation.mutate(
+      {
+        ...data,
+        id,
       },
-      onSuccess() {
-        toast.success('Dépense créée avec succès');
-        qc.invalidateQueries({ queryKey: ['expenses'] });
-        navigate('/');
+      {
+        onError(error) {
+          setError(error.message);
+        },
+        onSuccess() {
+          toast.success('Dépense créée avec succès');
+          qc.invalidateQueries({ queryKey: ['expenses'] });
+          navigate('/');
+        },
       },
-    });
+    );
   };
 
   const deleteHandler = () => {
