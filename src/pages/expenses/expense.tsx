@@ -42,7 +42,6 @@ import { dayjs } from '@/lib/dayjs';
 export function ExpensePage() {
   const [error, setError] = useState<string>();
   const [openDelDialog, setOpenDelDialog] = useState(false);
-  const [anyValueChanged, setAnyValueChanged] = useState(false);
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const qc = useQueryClient();
@@ -61,12 +60,6 @@ export function ExpensePage() {
       description: '',
     },
   });
-
-  useEffect(() => {
-    if (form.formState.isDirty) {
-      setAnyValueChanged(true);
-    }
-  }, [form.formState.isDirty]);
 
   useEffect(() => {
     if (expenseQuery.data) {
@@ -263,12 +256,11 @@ export function ExpensePage() {
             <div className="flex gap-2">
               <Button
                 type="submit"
-                pending={form.formState.isSubmitting}
+                pending={updateMutation.isPending}
                 disabled={
-                  !anyValueChanged ||
                   !form.formState.isValid ||
                   !form.formState.isDirty ||
-                  form.formState.isSubmitting
+                  updateMutation.isPending
                 }
               >
                 Mettre à jour

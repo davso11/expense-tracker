@@ -295,8 +295,8 @@ export function NewExpenseForm() {
 
         <Button
           type="submit"
-          disabled={form.formState.isSubmitting || !form.formState.isValid}
-          pending={form.formState.isSubmitting}
+          disabled={saveMutation.isPending || !form.formState.isValid}
+          pending={saveMutation.isPending}
         >
           Créer
         </Button>
