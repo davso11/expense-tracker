@@ -11,7 +11,7 @@ export function CategoryList() {
   const { setOpen } = useNewCategoryDialog();
   const { categoriesQuery } = useExpenseCategories({
     queries: {
-      limit: '6',
+      limit: '5',
     },
   });
 
