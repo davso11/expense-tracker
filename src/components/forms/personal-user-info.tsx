@@ -120,11 +120,11 @@ export function PersonalUserInfo() {
         <Button
           size="sm"
           className="mt-5"
-          pending={form.formState.isSubmitting}
+          pending={updateInfoMutation.isPending}
           disabled={
             !form.formState.isDirty ||
             !form.formState.isValid ||
-            form.formState.isSubmitting
+            updateInfoMutation.isPending
           }
         >
           Mettre à jour

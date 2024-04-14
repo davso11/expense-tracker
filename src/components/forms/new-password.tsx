@@ -109,11 +109,11 @@ export function NewPasswordForm() {
         <Button
           type="submit"
           size="sm"
-          pending={form.formState.isSubmitting}
+          pending={updatePasswordMutation.isPending}
           disabled={
             !form.formState.isDirty ||
             !form.formState.isValid ||
-            form.formState.isSubmitting
+            updatePasswordMutation.isPending
           }
         >
           Mettre à jour
