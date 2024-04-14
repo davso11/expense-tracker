@@ -49,3 +49,11 @@ export function useExpenseCategories(
     deleteMutation,
   };
 }
+
+export function useAllExpenseCategories() {
+  return useQuery({
+    queryKey: ['expense-categories', 'all'],
+    queryFn: () => actions.fetchMany(),
+    staleTime: Infinity,
+  });
+}

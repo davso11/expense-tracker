@@ -3,13 +3,11 @@ import { Button } from '@/components/ui/button';
 import { CategoryCard } from '@/components/category-card';
 import { CategoryCardLoader } from '@/components/loaders/category-card-loader';
 import { useNewCategoryDialog } from '@/contexts/category-dialog';
-import { useExpenseCategories } from '@/hooks/expense-categories';
+import { useAllExpenseCategories } from '@/hooks/expense-categories';
 
 export function ExpenseCategoriesPage() {
-  const { categoriesQuery } = useExpenseCategories();
+  const { data: categories, status } = useAllExpenseCategories();
   const { setOpen } = useNewCategoryDialog();
-
-  const categories = categoriesQuery.data ?? undefined;
 
   return (
     <section className="container">
@@ -20,14 +18,14 @@ export function ExpenseCategoriesPage() {
 
       <div>
         {/* ERROR */}
-        {categoriesQuery.status === 'error' && (
+        {status === 'error' && (
           <div className="pt-3 text-red-500">
             <span>Erreur survenue.</span>
           </div>
         )}
 
         {/* LOADING */}
-        {categoriesQuery.status === 'pending' && (
+        {status === 'pending' && (
           <div className="flex flex-wrap gap-x-8 gap-y-2 pt-3">
             {Array.from({ length: 6 }).map((_, idx) => (
               <CategoryCardLoader key={idx} />
@@ -36,7 +34,7 @@ export function ExpenseCategoriesPage() {
         )}
 
         {/* SUCCESS */}
-        {categoriesQuery.status === 'success' &&
+        {status === 'success' &&
           (categories && categories.length > 0 ? (
             <div className="flex flex-wrap gap-x-8 gap-y-2 pt-3">
               {/* NEW CATEGORY BUTTON */}
