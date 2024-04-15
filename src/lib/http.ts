@@ -24,7 +24,7 @@ export const http = ky.create({
               req.headers.set('Authorization', `Bearer ${accessToken}`);
               return ky(req);
             } catch (e) {
-              return res;
+              window.location.href = '/login';
             }
           }
         }

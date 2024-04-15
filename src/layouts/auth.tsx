@@ -1,11 +1,11 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { getAccessToken } from '@/lib/auth';
+import { useAuth } from '@/contexts/auth';
 import { APP_NAME } from '@/constants';
 
 export function AuthLayout() {
-  const token = getAccessToken();
+  const { user } = useAuth();
 
-  if (!!token) {
+  if (user) {
     return (
       <Navigate
         to="/"
