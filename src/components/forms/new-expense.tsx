@@ -30,7 +30,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Alert, AlertDescription } from '../ui/alert';
-import { useExpenseCategories } from '@/hooks/expense-categories';
+import { useAllExpenseCategories } from '@/hooks/expense-categories';
 import { useExpenses } from '@/hooks/expenses';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
@@ -42,11 +42,11 @@ import { dayjs } from '@/lib/dayjs';
 import { cn } from '@/lib/utils';
 
 export function NewExpenseForm() {
+  const categoriesQuery = useAllExpenseCategories();
+  const categories = categoriesQuery.data ?? undefined;
   const { saveMutation } = useExpenses({ enabled: false });
-  const { categoriesQuery } = useExpenseCategories();
   const [showDatePop, setShowDatePop] = useState(false);
   const [error, setError] = useState<string>();
-  const categories = categoriesQuery.data ?? undefined;
   const navigate = useNavigate();
   const qc = useQueryClient();
 
