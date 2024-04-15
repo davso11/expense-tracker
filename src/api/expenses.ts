@@ -127,7 +127,15 @@ export async function getMonthlyExpenses(queries?: Partial<{ q: string }>) {
     URL = await formatUrlQueries(URL, queries);
   }
 
-  const res = await http.get(URL).json<APIResponse<Expense[]>>();
+  const res = await http.get(URL).json<
+    APIResponse<{
+      count: number;
+      data: Array<{
+        date: string;
+        expenses: Array<Expense>;
+      }>;
+    }>
+  >();
 
   if (!res.ok) {
     throw Error(res.error);
