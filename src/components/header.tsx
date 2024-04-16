@@ -43,14 +43,20 @@ export function Header({
 
   const logout = async () => {
     try {
-      await signOutMutation.mutateAsync();
-      setUser(null);
-      setAccessToken(null);
-      toast.success('Vous êtes déconnecté(e).');
-      navigate('/login', { replace: true });
+      await toast.promise(signOutMutation.mutateAsync(), {
+        loading: 'Déconnexion...',
+        success() {
+          setUser(null);
+          setAccessToken(null);
+          setTimeout(() => {
+            navigate('/login', { replace: true });
+          }, 1000);
+          return 'Vous êtes déconnecté(e).';
+        },
+        error: 'Erreur survenue.',
+      });
     } catch (e) {
       console.error(e);
-      toast.error('Erreur survenue.');
     }
   };
 
