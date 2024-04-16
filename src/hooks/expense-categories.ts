@@ -50,10 +50,28 @@ export function useExpenseCategories(
   };
 }
 
-export function useAllExpenseCategories() {
+export function useAllExpenseCategories(
+  options?: Partial<{
+    enabled: boolean;
+  }>,
+) {
   return useQuery({
     queryKey: ['expense-categories', 'all'],
     queryFn: () => actions.fetchMany(),
+    enabled: options?.enabled ?? true,
+    staleTime: Infinity,
+  });
+}
+
+export function useRecentExpenseCategories(
+  options?: Partial<{
+    enabled: boolean;
+  }>,
+) {
+  return useQuery({
+    queryKey: ['expense-categories', 'recents'],
+    queryFn: () => actions.fetchMany({ limit: '5' }),
+    enabled: options?.enabled ?? true,
     staleTime: Infinity,
   });
 }

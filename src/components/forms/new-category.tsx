@@ -75,7 +75,6 @@ export function NewCategorieForm({
         toast.success('Catégorie enregistrée.');
         qc.invalidateQueries({
           queryKey: ['expense-categories'],
-          exact: true,
         });
         setOpenCatDialog?.(false);
       },

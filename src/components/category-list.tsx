@@ -3,17 +3,13 @@ import { Plus } from 'lucide-react';
 import { Button } from './ui/button';
 import { CategoryCard } from './category-card';
 import { CategoryCardLoader } from './loaders/category-card-loader';
-import { useExpenseCategories } from '@/hooks/expense-categories';
+import { useRecentExpenseCategories } from '@/hooks/expense-categories';
 import { useNewCategoryDialog } from '@/contexts/category-dialog';
 import { SeeAll } from './see-all';
 
 export function CategoryList() {
   const { setOpen } = useNewCategoryDialog();
-  const { categoriesQuery } = useExpenseCategories({
-    queries: {
-      limit: '5',
-    },
-  });
+  const categoriesQuery = useRecentExpenseCategories();
 
   return (
     <section className="container">
