@@ -18,7 +18,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { PasswordInput } from './password-input';
-import { RegisterInput } from '@/schemas/auth';
+import { LoginInput } from '@/schemas/auth';
 import { useAuthActions } from '@/hooks/auth';
 import { setAccessToken } from '@/lib/auth';
 import { useAuth } from '@/contexts/auth';
@@ -38,15 +38,15 @@ export function LoginForm({
 
   const from = location.state?.from?.pathname || '/';
 
-  const form = useForm<RegisterInput>({
-    resolver: zodResolver(RegisterInput),
+  const form = useForm<LoginInput>({
+    resolver: zodResolver(LoginInput),
     defaultValues: {
       email: '',
       password: '',
     },
   });
 
-  const submitHandler = (data: RegisterInput) => {
+  const submitHandler = (data: LoginInput) => {
     setError(undefined);
     setSuccess(undefined);
 

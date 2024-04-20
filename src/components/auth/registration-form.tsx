@@ -32,6 +32,8 @@ export function RegistrationForm({
   const form = useForm<RegisterInput>({
     resolver: zodResolver(RegisterInput),
     defaultValues: {
+      lastName: '',
+      firstName: '',
       email: '',
       password: '',
     },
@@ -71,6 +73,43 @@ export function RegistrationForm({
         className={cn(className)}
         {...props}
       >
+        {/* NAMES CONTAINER */}
+        <div className="mb-6 flex items-center gap-x-4 gap-y-6">
+          <FormField
+            name="lastName"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel>Nom</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Nom"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            name="firstName"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel>Prénoms</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Prénoms"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
         <FormField
           name="email"
           control={form.control}

@@ -1,6 +1,12 @@
 import { z } from 'zod';
 
 export const RegisterInput = z.object({
+  lastName: z.string().min(1, {
+    message: 'Le nom est requis',
+  }),
+  firstName: z.string().min(1, {
+    message: 'Le(s) prénom(s) est(sont) requis',
+  }),
   email: z
     .string()
     .min(1, {
