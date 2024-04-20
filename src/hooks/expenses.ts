@@ -80,11 +80,19 @@ export function useTotalExpenses(
 }
 
 export function useMonthlyExpenses(
-  options?: Partial<{ enabled: boolean; queries?: Partial<{ q: string }> }>,
+  options?: Partial<{
+    enabled: boolean;
+    queries?: Partial<{
+      q: string;
+    }>;
+  }>,
 ) {
   return useQuery({
     queryKey: ['expenses', 'monthly'],
-    queryFn: () => actions.getMonthlyExpenses(options?.queries),
+    queryFn: () =>
+      actions.getMonthlyExpenses({
+        q: `category${options?.queries?.q ? `:${options.queries.q}` : ''}`,
+      }),
     enabled: options?.enabled ?? true,
     staleTime: Infinity,
   });
