@@ -1,9 +1,12 @@
 import {
+  Home,
+  Monitor,
+  Moon,
   MoreVertical,
   Plus,
   PackagePlus,
+  Sun,
   TicketPlus,
-  Home,
 } from 'lucide-react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
@@ -24,10 +27,12 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Button } from './ui/button';
+import { Separator } from './ui/separator';
 import { NewCategorieForm } from './forms/new-category';
 import { useNewCategoryDialog } from '@/contexts/category-dialog';
 import { useAuthActions } from '@/hooks/auth';
 import { setAccessToken } from '@/lib/auth';
+import { useTheme } from '@/contexts/theme';
 import { useAuth } from '@/contexts/auth';
 import { APP_NAME } from '@/constants';
 import { cn } from '@/lib/utils';
@@ -38,6 +43,7 @@ export function Header({
 }: React.ComponentProps<'header'>) {
   const { open, setOpen } = useNewCategoryDialog();
   const { signOutMutation } = useAuthActions();
+  const { setTheme } = useTheme();
   const { setUser } = useAuth();
   const navigate = useNavigate();
 
@@ -72,23 +78,68 @@ export function Header({
         </Link>
 
         {/* NAV LINKS */}
-        <div className="ml-auto space-x-2">
-          <Button
-            pill
-            size="icon"
-            variant="secondary"
-            tooltip="Accueil"
-            asChild
-          >
-            <NavLink to="/">
-              <Home size={18} />
-            </NavLink>
-          </Button>
+        <div className="ml-auto flex items-center">
+          <div className="space-x-3">
+            <Button
+              pill
+              size="icon"
+              variant="secondary"
+              tooltip="Accueil"
+              asChild
+            >
+              <NavLink to="/">
+                <Home size={18} />
+              </NavLink>
+            </Button>
 
-          <Dialog
-            open={open}
-            onOpenChange={setOpen}
-          >
+            <Dialog
+              open={open}
+              onOpenChange={setOpen}
+            >
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    pill
+                    size="icon"
+                    variant="secondary"
+                  >
+                    <Plus size={18} />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-32">
+                  <DropdownMenuItem asChild>
+                    <Link to="/expenses/new">
+                      <TicketPlus
+                        className="mr-1.5"
+                        size={16}
+                      />
+                      <span>Dépense</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DialogTrigger asChild>
+                    <DropdownMenuItem>
+                      <PackagePlus
+                        className="mr-1.5"
+                        size={16}
+                      />
+                      <span>Catégorie</span>
+                    </DropdownMenuItem>
+                  </DialogTrigger>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <DialogContent className="w-[25.25rem]">
+                <DialogHeader>
+                  <DialogTitle>Nouvelle catégorie</DialogTitle>
+                </DialogHeader>
+
+                {/* NEW EXPENSE FORM */}
+                <NewCategorieForm
+                  id="new-category-form"
+                  setOpenCatDialog={setOpen}
+                />
+              </DialogContent>
+            </Dialog>
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -96,60 +147,46 @@ export function Header({
                   size="icon"
                   variant="secondary"
                 >
-                  <Plus size={18} />
+                  <MoreVertical size={18} />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-32">
-                <DropdownMenuItem asChild>
-                  <Link to="/expenses/new">
-                    <TicketPlus
-                      className="mr-1.5"
-                      size={16}
-                    />
-                    <span>Dépense</span>
-                  </Link>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Mon compte</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => navigate('/account/settings')}>
+                  Réglages
                 </DropdownMenuItem>
-                <DialogTrigger asChild>
-                  <DropdownMenuItem>
-                    <PackagePlus
-                      className="mr-1.5"
-                      size={16}
-                    />
-                    <span>Catégorie</span>
-                  </DropdownMenuItem>
-                </DialogTrigger>
+                <DropdownMenuItem onClick={logout}>
+                  Déconnexion
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            <DialogContent className="w-[25.25rem]">
-              <DialogHeader>
-                <DialogTitle>Nouvelle catégorie</DialogTitle>
-              </DialogHeader>
+          </div>
 
-              {/* NEW EXPENSE FORM */}
-              <NewCategorieForm
-                id="new-category-form"
-                setOpenCatDialog={setOpen}
-              />
-            </DialogContent>
-          </Dialog>
+          <Separator className="mx-4 h-6 w-px" />
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 pill
+                variant="outline"
                 size="icon"
-                variant="secondary"
               >
-                <MoreVertical size={18} />
+                <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                <span className="sr-only">Changer le thème</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>Mon compte</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => navigate('/account/settings')}>
-                Réglages
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => setTheme('light')}>
+                <Sun className="mr-2 h-4 w-4" /> Clair
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={logout}>Déconnexion</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme('dark')}>
+                <Moon className="mr-2 h-4 w-4" /> Sombre
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme('system')}>
+                <Monitor className="mr-2 h-4 w-4" /> Système
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

@@ -15,15 +15,5 @@ export function RequireAuth() {
     );
   }
 
-  // TODO: Check if email is verified
-  // if (!user.emailVerified) {
-  //   return (
-  //    <Navigate
-  //      replace
-  //      to="/confirm-email"
-  //    />;
-  //   )
-  // }
-
   return <Outlet />;
 }

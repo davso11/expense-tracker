@@ -14,7 +14,7 @@ export function DailyExpenseCard({ expense, className, ...props }: Props) {
       <div className="flex items-center">
         {/* CATEGORY */}
         <div className="mr-4 line-clamp-1 inline-flex items-center">
-          <div className="center-flex size-10 shrink-0 rounded-full bg-slate-100">
+          <div className="center-flex size-10 shrink-0 rounded-full bg-accent">
             <span className="text-2xl">{expense.category!.emoji}</span>
           </div>
           <span className="ml-2">

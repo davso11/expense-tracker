@@ -12,7 +12,7 @@ export function TotalMonthlyExpenseCard() {
 
   return (
     <section className="container">
-      <div className="center-flex relative min-h-72 overflow-hidden rounded-xl bg-slate-100/50">
+      <div className="center-flex relative min-h-72 overflow-hidden rounded-xl bg-secondary">
         {monthlyTotalQuery.status === 'success' && (
           <div className="center-flex flex-col">
             <span className="text-6xl font-bold">
@@ -27,7 +27,7 @@ export function TotalMonthlyExpenseCard() {
               to="/monthly-expenses"
               className="mt-1"
               button={{
-                variant: 'outline',
+                variant: 'default',
               }}
             />
           </div>

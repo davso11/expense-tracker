@@ -19,11 +19,9 @@ const MonthlyExpensesProvider = (
   }>,
 ) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [query, setQuery] = useState<string | null>(
-    searchParams.get('category'),
-  );
+  const [query, setQuery] = useState(searchParams.get('category'));
 
-  const updateQuery = useCallback(async (value: string | null) => {
+  const updateQuery = useCallback(async (value: typeof query) => {
     setSearchParams(value ? { category: value } : {});
     setQuery(value);
   }, []);

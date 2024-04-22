@@ -54,7 +54,7 @@ export function DailyExpensesPage() {
                 <div key={expense.id}>
                   <Button
                     variant="ghost"
-                    className="flex h-auto rounded-xl py-3 pl-1.5 pr-2.5 hover:bg-slate-50"
+                    className="flex h-auto rounded-xl py-3 pl-1.5 pr-2.5 hover:bg-secondary/50"
                     asChild
                   >
                     <Link to={`/expenses/${expense.id}`}>
@@ -64,7 +64,7 @@ export function DailyExpensesPage() {
 
                   <Separator
                     className={cn(
-                      'my-1 bg-slate-100',
+                      'my-1 bg-accent',
                       idx === expenses!.length - 1 && 'hidden',
                     )}
                   />

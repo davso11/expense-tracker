@@ -36,7 +36,7 @@ export function CategoryCard({
           {...props}
         >
           <div className="center-flex flex-col">
-            <div className="center-flex size-16 overflow-hidden rounded-full bg-slate-100">
+            <div className="center-flex size-16 overflow-hidden rounded-full bg-accent">
               <span className="text-3xl transition-[font-size] duration-100 group-hover:text-4xl">
                 {category.emoji}
               </span>

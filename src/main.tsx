@@ -3,6 +3,7 @@ import { Toaster } from 'react-hot-toast';
 import { createRoot } from 'react-dom/client';
 import { Analytics } from '@vercel/analytics/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ThemeProvider } from '@/contexts/theme';
 import { AuthProvider } from '@/contexts/auth';
 import { App } from '@/app';
 import '@/global.css';
@@ -18,7 +19,7 @@ const queryClient = new QueryClient({
 const PRIMARY_COLOR = 'hsl(214.3 31.8% 91.4%)';
 
 createRoot(document.getElementById('root')!).render(
-  <>
+  <ThemeProvider>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <ConfigProvider
@@ -46,5 +47,5 @@ createRoot(document.getElementById('root')!).render(
       </AuthProvider>
     </QueryClientProvider>
     <Analytics />
-  </>,
+  </ThemeProvider>,
 );
