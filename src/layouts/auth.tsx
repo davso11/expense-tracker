@@ -17,7 +17,7 @@ export function AuthLayout() {
   return (
     <div className="center-flex h-screen">
       {/* TODO: ... */}
-      <div className="hidden h-full flex-1 bg-gradient-to-r from-slate-50 to-slate-200 lg:block">
+      <div className="hidden h-full flex-1 bg-gradient-to-r from-slate-50 to-slate-200 dark:from-slate-700 dark:to-slate-800 lg:block">
         <div className="center-flex size-full">
           <h1 className="text-5xl font-bold">{APP_NAME}</h1>
         </div>

@@ -61,7 +61,7 @@ export function MonthlyExpensesList() {
       {status === 'pending' && (
         <>
           <div className="mb-8 flex items-center justify-between">
-            <Skeleton className="h-[42px] w-60 bg-emerald-50" />
+            <Skeleton className="h-[42px] w-60 bg-emerald-50 dark:bg-emerald-950/80" />
           </div>
 
           <div className="flex flex-col space-y-9">
@@ -72,7 +72,7 @@ export function MonthlyExpensesList() {
                   <div key={idx}>
                     <DailyExpenseCardLoader />
                     <Separator
-                      className={cn('my-1 bg-slate-100', idx === 2 && 'hidden')}
+                      className={cn('my-1 bg-accent', idx === 2 && 'hidden')}
                     />
                   </div>
                 ))}

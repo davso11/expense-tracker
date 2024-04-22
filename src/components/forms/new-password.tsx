@@ -37,7 +37,7 @@ export function NewPasswordForm() {
 
     updatePasswordMutation.mutate(data, {
       onSuccess() {
-        setSuccess('Mot de passe a été mises à jour avec succès.');
+        setSuccess('Mot de passe a été mise à jour avec succès.');
         form.reset();
       },
       onError(e) {

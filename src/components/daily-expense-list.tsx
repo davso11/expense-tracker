@@ -47,7 +47,7 @@ export function DailyExpenseList() {
               <div key={key}>
                 <DailyExpenseCardLoader />
                 <Separator
-                  className={cn('my-1 bg-slate-100', idx === 2 && 'hidden')}
+                  className={cn('my-1 bg-accent', idx === 2 && 'hidden')}
                 />
               </div>
             ))}
